@@ -104,29 +104,41 @@ class GalleryGridViewState extends State<GalleryGridView> {
               animation: widget.provider.assetCountNotifier,
               builder: (_, __) => Container(
                 color: widget.gridViewBackgroundColor,
-                child: GridView.builder(
-                  key: ValueKey(widget.path),
-                  shrinkWrap: true,
-                  padding: widget.padding ?? const EdgeInsets.all(0),
-                  physics: widget.gridViewPhysics ?? const ScrollPhysics(),
-                  controller: widget.gridViewController ?? ScrollController(),
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    childAspectRatio: widget.childAspectRatio,
-                    crossAxisCount: widget.crossAxisCount,
-                    mainAxisSpacing: 2.5,
-                    crossAxisSpacing: 2.5,
-                  ),
+                child: 
+                
+                
+                
+                
+     FutureBuilder<int?>(
+                  future: getCountData(),
+                  initialData: 0,
+                  builder: (context, snapshot) {
+                    return GridView.builder(
+                      key: ValueKey(widget.path),
+                      shrinkWrap: true,
+                      padding: widget.padding ?? const EdgeInsets.all(0),
+                      physics: widget.gridViewPhysics ?? const ScrollPhysics(),
+                      controller: widget.gridViewController ?? ScrollController(),
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        childAspectRatio: widget.childAspectRatio,
+                        crossAxisCount: widget.crossAxisCount,
+                        mainAxisSpacing: 2.5,
+                        crossAxisSpacing: 2.5,
+                      ),
 
-                  /// render thumbnail
-                  itemBuilder: (context, index) =>
-                      _buildItem(context, index, widget.provider),
-                  itemCount: widget.provider.assetCount,
-                  addRepaintBoundaries: true,
-                ),
-              ),
+                      /// render thumbnail
+                      itemBuilder: (context, index) => _buildItem(context, index, widget.provider),
+                      itemCount: snapshot.data ?? 0,
+                      addRepaintBoundaries: true,
+                    );
+                  }),
             ),
           )
         : Container();
+  }
+  
+   Future<int?> getCountData() async {
+    return await widget.path?.assetCountAsync;
   }
 
   Widget _buildItem(
