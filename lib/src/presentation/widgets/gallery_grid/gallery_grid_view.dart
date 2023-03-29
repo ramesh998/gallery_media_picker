@@ -133,7 +133,7 @@ class GalleryGridViewState extends State<GalleryGridView> {
                     );
                   }),
             ),
-          )
+          ))
         : Container();
   }
   
